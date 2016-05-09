@@ -12,8 +12,7 @@ class Events
 
         $events = [];
 
-        $event = \Calendar::event($eventsData['title'], true, date_create_from_format('dd/MM/yy', $eventsData['startdate']), date_create_from_format('dd/MM/yy', $eventsData['enddate']), $eventsData['id'], $eventsData);
-        array_push($events, $event);
+        $events[] = \Calendar::event($eventsData['title'], true, date_create_from_format('dd/MM/yy', $eventsData['startdate']), date_create_from_format('dd/MM/yy', $eventsData['enddate']), $eventsData['id'], $eventsData);
 
         return $events;
     }
