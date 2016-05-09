@@ -7,10 +7,10 @@ use HeritageCalendar\Events;
 
 class EventsTest extends TestCase
 {
-    public function testSetEvents()
+    public function testGet()
     {
         $events = new Events();
-        $setEvents = $events->setEvents();
+        $getEvents = $events->get();
         $testEventData = [
           'id' => 'd.en.36304',
           'title' => 'Feltmaking Workshops',
@@ -26,7 +26,33 @@ class EventsTest extends TestCase
         //$title, $isAllDay, $start, $end, $id = null, $options
         $testEvent = [\Calendar::event($testEventData['title'], true, date_create_from_format('dd/MM/yy', $testEventData['startdate']), date_create_from_format('dd/MM/yy', $testEventData['enddate']), $testEventData['id'], $testEventData)];
 
-        $this->assertEquals($testEvent, $setEvents);
+        $calendar = \Calendar::addEvents($testEvent);
+
+        $this->assertEquals($calendar, $getEvents);
+    }
+
+    public function testSet()
+    {
+        $events = new Events();
+        $setEvents = $events->set();
+        $testEventData = [
+          'id' => 'd.en.36304',
+          'title' => 'Feltmaking Workshops',
+          'startdate' => '01/05/16',
+          'enddate' => '17/07/16',
+          'eventtime' => null,
+          'recurs' => 'None',
+          'venue' => 'Phoenix Park Visitor Centre - Ashtown Castle',
+          'description' => ' ',
+          'fulltext' => '/en/dublin/phoenixparkvisitorcentre-ashtowncastle/events/fulldescription,36304,en.html',
+          'category' => ' ',
+          'maincategory' => null, ];
+        //$title, $isAllDay, $start, $end, $id = null, $options
+        $testEvent = [\Calendar::event($testEventData['title'], true, date_create_from_format('dd/MM/yy', $testEventData['startdate']), date_create_from_format('dd/MM/yy', $testEventData['enddate']), $testEventData['id'], $testEventData)];
+
+        $calendar = \Calendar::addEvents($testEvent);
+
+        $this->assertEquals($calendar, $setEvents);
     }
 
     public function testParse()

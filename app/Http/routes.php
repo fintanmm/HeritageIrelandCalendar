@@ -11,8 +11,4 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/calendar', 'Calendar@index');
+Route::get('/', 'Calendar@index');

@@ -2,6 +2,8 @@
 
 namespace HeritageCalendar\Http\Controllers;
 
+use HeritageCalendar\Events;
+
 class Calendar extends Controller
 {
     /**
@@ -11,7 +13,10 @@ class Calendar extends Controller
      */
     public function index()
     {
-        return view('welcome');
+        $events = new Events();
+        $calendar = $events->get();
+
+        return view('calendar', compact('calendar'));
     }
 
     /**

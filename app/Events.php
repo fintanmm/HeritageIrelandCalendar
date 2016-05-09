@@ -6,15 +6,20 @@ use XmlParser;
 
 class Events
 {
-    public function setEvents()
+    public function get()
     {
-        $eventsData = $this->parse();
+        return $this->set();
+    }
+
+    public function set()
+    {
+        $parseEvent = $this->parse();
 
         $events = [];
 
-        $events[] = \Calendar::event($eventsData['title'], true, date_create_from_format('dd/MM/yy', $eventsData['startdate']), date_create_from_format('dd/MM/yy', $eventsData['enddate']), $eventsData['id'], $eventsData);
+        $events[] = \Calendar::event($parseEvent['title'], true, date_create_from_format('dd/MM/yy', $parseEvent['startdate']), date_create_from_format('dd/MM/yy', $parseEvent['enddate']), $parseEvent['id'], $parseEvent);
 
-        return $events;
+        return \Calendar::addEvents($events);
     }
 
     public function parse()
