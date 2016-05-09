@@ -1,12 +1,14 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
+    "name": "fintanmm/HeritageIrelandCalendar",
+    "description": "A rewrite of the Heritage Ireland calendar.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.1.*"
+        "laravel/framework": "5.1.*",
+        "maddhatter/laravel-fullcalendar": "^1.2",
+        "orchestra/parser": "3.1.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -3,3 +3,6 @@
 Homestead.yaml
 Homestead.json
 .env
+
+# added by GitSavvy
+public/xmldata
