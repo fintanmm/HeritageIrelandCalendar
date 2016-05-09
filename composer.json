@@ -1,9 +1,16 @@
 {
-    "name": "fintanmm/HeritageIrelandCalendar",
+    "name": "fintanmm/heritage-ireland-calendar",
     "description": "A rewrite of the Heritage Ireland calendar.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
+    "authors": [
+        {
+            "name": "Fintan MacMahon",
+            "email": "fintan.macmahon@gmail.com",
+            "homepage": "https://github.com/fintanmm"
+        }
+    ],
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
