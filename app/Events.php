@@ -2,8 +2,6 @@
 
 namespace HeritageCalendar;
 
-use XmlParser;
-
 class Events
 {
     public function get()
@@ -16,8 +14,9 @@ class Events
         $parseEvent = $this->parse();
 
         $events = [];
-
-        $events[] = \Calendar::event($parseEvent['title'], true, date_create_from_format('dd/MM/yy', $parseEvent['startdate']), date_create_from_format('dd/MM/yy', $parseEvent['enddate']), $parseEvent['id'], $parseEvent);
+        for ($i = 0; $i < count($parseEvent); $i++) {
+            $events[$i] = \Calendar::event($parseEvent[$i]['title'], true, date_create_from_format('dd/MM/yy', $parseEvent[$i]['start']), date_create_from_format('dd/MM/yy', $parseEvent[$i]['end']), $parseEvent[$i]['id'], $parseEvent[$i]);
+        }
 
         return \Calendar::addEvents($events);
     }
@@ -25,33 +24,45 @@ class Events
     public function parse()
     {
         $xml = $this->loadXml();
+        $queryp = qp($xml, 'item');
+        $i = 0;
+        $parseEvent = [];
 
-        return $xml->parse($this->schema());
+        foreach ($queryp as $child) {
+            foreach ($this->schema() as $key => $value) {
+                if ($child->find($key)->hasAttr('name')) {
+                    $parseEvent[$i][$value] = $child->find($key)->attr('name');
+                } else {
+                    $parseEvent[$i][$value] = $child->children($key)->text();
+                }
+            }
+            $i++;
+        }
+
+        return $parseEvent;
     }
 
     public function loadXml()
     {
         //TODO: Details don't belong in code.
-        $file = XmlParser::load(public_path('/xmldata/events/en/index.xml'));
-
-        return $file;
+        return public_path('/xmldata/events/en/index.xml');
     }
 
     public function schema()
     {
         //TODO: Details don't belong in code.
         return [
-            'id' => ['uses' => 'item.id.a::name'],
-            'title' => ['uses' => 'item.title'],
-            'startdate' => ['uses' => 'item.startdate'],
-            'enddate' => ['uses' => 'item.enddate'],
-            'eventtime' => ['uses' => 'item.eventtime'],
-            'recurs' => ['uses' => 'item.recurs'],
-            'venue' => ['uses' => 'item.venue'],
-            'description' => ['uses' => 'item.description'],
-            'fulltext' => ['uses' => 'item.fulltext'],
-            'category' => ['uses' => 'item.category'],
-            'maincategory' => ['uses' => 'item.maincategory'],
+            'id>a' => 'id',
+            'title' => 'title',
+            'startdate' => 'start',
+            'enddate' => 'end',
+            'eventtime' => '',
+            'recurs' => 'recurs',
+            'venue' => 'venue',
+            'description' => 'description',
+            'fulltext' => 'url',
+            'category' => 'category',
+            'maincategory' => 'maincategory',
         ];
     }
 }

@@ -15,7 +15,7 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
         "maddhatter/laravel-fullcalendar": "^1.2",
-        "orchestra/parser": "3.1.*"
+        "querypath/QueryPath": "~3.0.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

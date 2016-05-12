@@ -60,7 +60,7 @@ class EventsTest extends TestCase
         $events = new Events();
         $parse = $events->parse();
 
-        $this->assertContains('Feltmaking Workshops', $parse);
+        $this->assertContains('Feltmaking Workshops', $parse[0]);
     }
 
     /**
@@ -68,29 +68,62 @@ class EventsTest extends TestCase
      */
     public function testLoadXml()
     {
+        $xml = public_path('/xmldata/events/en/index.xml');
         $events = new Events();
         $xmlFile = $events->loadXml();
 
-        $this->assertInstanceOf('Orchestra\Parser\Xml\Document', $xmlFile);
+        $this->assertEquals($xml, $xmlFile);
     }
 
     public function testSchema()
     {
         $events = new Events();
         $schema = $events->schema();
-        $testSchama = [
-            'id' => ['uses' => 'item.id.a::name'],
-            'title' => ['uses' => 'item.title'],
-            'startdate' => ['uses' => 'item.startdate'],
-            'enddate' => ['uses' => 'item.enddate'],
-            'eventtime' => ['uses' => 'item.eventtime'],
-            'recurs' => ['uses' => 'item.recurs'],
-            'venue' => ['uses' => 'item.venue'],
-            'description' => ['uses' => 'item.description'],
-            'fulltext' => ['uses' => 'item.fulltext'],
-            'category' => ['uses' => 'item.category'],
-            'maincategory' => ['uses' => 'item.maincategory'],
+        $testSchema = [
+            'id>a' => 'id',
+            'title' => 'title',
+            'startdate' => 'start',
+            'enddate' => 'end',
+            'eventtime' => '',
+            'recurs' => 'recurs',
+            'venue' => 'venue',
+            'description' => 'description',
+            'fulltext' => 'url',
+            'category' => 'category',
+            'maincategory' => 'maincategory',
         ];
-        $this->assertEquals($testSchama, $schema);
+        $this->assertEquals($testSchema, $schema);
+    }
+
+    public function testQueryPath()
+    {
+        $testSchema = [
+            'id>a' => 'id',
+            'title' => 'title',
+            'startdate' => 'start',
+            'enddate' => 'end',
+            'eventtime' => 'eventtime',
+            'recurs' => 'recurs',
+            'venue' => 'venue',
+            'description' => 'description',
+            'fulltext' => 'url',
+            'category' => 'category',
+            'maincategory' => 'maincategory',
+        ];
+        $eventData = [];
+
+        $xml = public_path('/xmldata/events/en/index.xml');
+        $queryp = qp($xml, 'item');
+        $i = 0;
+        foreach ($queryp as $child) {
+            foreach ($testSchema as $key => $value) {
+                if ($child->find($key)->hasAttr('name')) {
+                    $eventData[$i][$value] = $child->find($key)->attr('name');
+                } else {
+                    $eventData[$i][$value] = $child->children($key)->text();
+                }
+            }
+            $i++;
+        }
     }
 }
