@@ -15,10 +15,15 @@ class Events
 
         $events = [];
         for ($i = 0; $i < count($parseEvent); $i++) {
-            $events[$i] = \Calendar::event($parseEvent[$i]['title'], true, date_create_from_format('dd/MM/yy', $parseEvent[$i]['start']), date_create_from_format('dd/MM/yy', $parseEvent[$i]['end']), $parseEvent[$i]['id'], $parseEvent[$i]);
+            $events[$i] = \Calendar::event($parseEvent[$i]['title'], true, self::formatDate($parseEvent[$i]['start']), self::formatDate($parseEvent[$i]['end']), $parseEvent[$i]['id'], $parseEvent[$i]);
         }
 
         return \Calendar::addEvents($events);
+    }
+
+    public function formatDate($date)
+    {
+        return date_create_from_format('j/m/y', $date);
     }
 
     public function parse()

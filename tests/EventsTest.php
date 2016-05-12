@@ -48,11 +48,20 @@ class EventsTest extends TestCase
           'category' => ' ',
           'maincategory' => null, ];
         //$title, $isAllDay, $start, $end, $id = null, $options
-        $testEvent = [\Calendar::event($testEventData['title'], true, date_create_from_format('dd/MM/yy', $testEventData['startdate']), date_create_from_format('dd/MM/yy', $testEventData['enddate']), $testEventData['id'], $testEventData)];
+        $testEvent = [\Calendar::event($testEventData['title'], true, date_create_from_format('j/m/y', $testEventData['startdate']), date_create_from_format('j/m/y', $testEventData['enddate']), $testEventData['id'], $testEventData)];
 
         $calendar = \Calendar::addEvents($testEvent);
 
         $this->assertEquals($calendar, $setEvents);
+    }
+
+    public function testFormatDate()
+    {
+        $events = new Events();
+        $formatDate = $events->formatDate('01/05/16');
+        $testDate = date_create_from_format('j/m/y', '01/05/16');
+
+        $this->assertEquals($testDate, $formatDate);
     }
 
     public function testParse()
@@ -97,6 +106,7 @@ class EventsTest extends TestCase
 
     public function testQueryPath()
     {
+        //This is more of a scratchpad.
         $testSchema = [
             'id>a' => 'id',
             'title' => 'title',
